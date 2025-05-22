@@ -57,9 +57,8 @@ loadZoomOverlay();
 
 ## Demo
 
-See the included [`index.html`](https://image-viewer-vanilla-js.github.io/image-viewer-vanilla-js/) for a working demo.  
-You can open this file directly in your browser to try out the image viewer.
-
+See [`Live Demo`](https://image-viewer-vanilla-js.github.io/image-viewer-vanilla-js/) of `index.html`  
+You can open this file directly in your browser to try out.
 
 ## License
 
