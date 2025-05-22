@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Table with Animated Image Overlay</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .table-header {
+            background: linear-gradient(135deg, #0a72ea 0%, #5598ef 100%);
+            color: white;
+            padding: 20px;
+        }
+
+        .table-header h1 {
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .product-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .product-table th {
+            background-color: #f8f9fa;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #495057;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .product-table td {
+            padding: 15px;
+            border-bottom: 1px solid #dee2e6;
+            vertical-align: middle;
+        }
+
+        .product-table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .product-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .product-image:hover {
+            transform: scale(1.05);
+        }
+
+        .product-name {
+            font-weight: 600;
+            color: #343a40;
+            margin-bottom: 5px;
+        }
+
+        .product-description {
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .price {
+            font-weight: 700;
+            color: #28a745;
+            font-size: 18px;
+        }
+
+        .stock {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .in-stock {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .low-stock {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .out-of-stock {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Overlay Styles */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #f4f4f4cc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .overlay-image {
+            max-width: 80%;
+            max-height: 80%;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            transform: scale(0.1);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform-origin: center;
+        }
+
+        .overlay.active .overlay-image {
+            transform: scale(1);
+        }
+
+        .close-hint {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 14px;
+            opacity: 0.7;
+        }
+
+
+
+        @media (max-width: 768px) {
+            .product-table {
+                font-size: 14px;
+            }
+            
+            .product-image {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .overlay-image {
+                max-width: 95%;
+                max-height: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="tableContainer">
+        <div class="table-header">
+            <h1>Product Catalog</h1>
+        </div>
+        
+        <table class="product-table">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Category</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <img src="https://placehold.co/400x400/000/fff/png" alt="Wireless Headphones" class="product-image" data-large="https://placehold.co/400x400/000/fff/png">
+                    </td>
+                    <td>
+                        <div class="product-name">Wireless Headphones</div>
+                        <div class="product-description">Premium noise-canceling headphones</div>
+                    </td>
+                    <td class="price">$199.99</td>
+                    <td><span class="stock in-stock">In Stock</span></td>
+                    <td>Electronics</td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="https://placehold.co/400x400/000/fff/png" alt="Smartphone" class="product-image" data-large="https://placehold.co/400x400/000/fff/png">
+                    </td>
+                    <td>
+                        <div class="product-name">Smartphone Pro</div>
+                        <div class="product-description">Latest flagship with advanced camera</div>
+                    </td>
+                    <td class="price">$899.99</td>
+                    <td><span class="stock low-stock">Low Stock</span></td>
+                    <td>Electronics</td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="https://placehold.co/400x400/000/fff/png" alt="Laptop" class="product-image" data-large="https://placehold.co/400x400/000/fff/png">
+                    </td>
+                    <td>
+                        <div class="product-name">Gaming Laptop</div>
+                        <div class="product-description">High-performance laptop for gaming</div>
+                    </td>
+                    <td class="price">$1,299.99</td>
+                    <td><span class="stock in-stock">In Stock</span></td>
+                    <td>Computers</td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="https://placehold.co/400x400/000/fff/png" alt="Watch" class="product-image" data-large="https://placehold.co/400x400/000/fff/png">
+                    </td>
+                    <td>
+                        <div class="product-name">Smart Watch</div>
+                        <div class="product-description">Fitness tracking and notifications</div>
+                    </td>
+                    <td class="price">$249.99</td>
+                    <td><span class="stock out-of-stock">Out of Stock</span></td>
+                    <td>Wearables</td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="https://placehold.co/400x400/000/fff/png" alt="Camera" class="product-image" data-large="https://placehold.co/400x400/000/fff/png">
+                    </td>
+                    <td>
+                        <div class="product-name">Digital Camera</div>
+                        <div class="product-description">Professional DSLR camera</div>
+                    </td>
+                    <td class="price">$699.99</td>
+                    <td><span class="stock in-stock">In Stock</span></td>
+                    <td>Photography</td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="https://placehold.co/400x400/000/fff/png" alt="Tablet" class="product-image" data-large="https://placehold.co/400x400/000/fff/png">
+                    </td>
+                    <td>
+                        <div class="product-name">Tablet Pro</div>
+                        <div class="product-description">10-inch display with stylus support</div>
+                    </td>
+                    <td class="price">$399.99</td>
+                    <td><span class="stock in-stock">In Stock</span></td>
+                    <td>Electronics</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Overlay -->
+        <div class="overlay" id="imageOverlay">
+            <div class="close-hint">Click outside to close</div>
+            <img src="" alt="" class="overlay-image" id="overlayImage">
+        </div>
+    </div>
+
+    <script>
+        const productImages = document.querySelectorAll('.product-image');
+        const overlay = document.getElementById('imageOverlay');
+        const overlayImage = document.getElementById('overlayImage');
+        const tableContainer = document.getElementById('tableContainer');
+
+        productImages.forEach(image => {
+            image.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                const largeSrc = this.getAttribute('data-large') || this.src;
+                
+                overlay.classList.add('active');
+                overlayImage.src = largeSrc;
+                overlayImage.alt = this.alt;
+            });
+        });
+
+        window.addEventListener('scroll', function() {
+            if (overlay.classList.contains('active')) {
+                closeOverlay();
+            }
+        });
+
+        document.addEventListener('click', function(e) {
+            if (overlay.classList.contains('active') && !overlayImage.contains(e.target)) {
+                closeOverlay();
+            }
+        });
+
+        document.addEventListener('keyup', function(e) {
+            if (overlay.classList.contains('active')) {
+                closeOverlay();
+            }
+        });
+
+        document.addEventListener('touchstart', function() {
+            if (overlay.classList.contains('active')) {
+                closeOverlay();
+            }
+        });
+
+        document.addEventListener('touchend', function() {
+            if (overlay.classList.contains('active')) {
+                closeOverlay();
+            }
+        });
+
+        overlay.addEventListener('click', function(e) {
+            if (e.target === overlay) {
+                closeOverlay();
+            }
+        });
+
+        function closeOverlay() {
+            overlay.classList.remove('active');
+        }
+
+        overlayImage.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    </script>
+</body>
+</html>
